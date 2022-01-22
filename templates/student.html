@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="h-100 text-center">
+        <p class="fs-2">
+            Name: {{ student[0] }}<br>
+            ID: {{ student[1] }}<br>
+            Department: {{ student[2] }}<br>
+            Status:
+            {% if student[3] == 0 %}
+                Not Vaccinated
+            {% elif student[3] == 1 %}
+                First Dose
+            {% else %}
+                Second Dose
+            {% endif %}
+        </p>
+        <a class="btn btn-outline-secondary" href="{{ url_for('update', student_id=student[1]) }}">Edit</a>
+    </div>
+{% endblock %}

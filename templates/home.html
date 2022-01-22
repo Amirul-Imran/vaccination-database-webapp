@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="d-flex align-items-center flex-column h-100 text-center">
+        <div class="my-auto">
+            <h1 class="my-auto mb-5">Welcome to the Engineering Faculty Vaccination Status Management Website</h1>
+            <div class="mt-5">
+                <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('add') }}">Add</a>
+                <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('search') }}">Search</a>
+                <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('remove') }}">Remove</a>
+                <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('stats') }}">Stats</a>
+                <a class="btn btn-outline-secondary btn-lg" href="{{ url_for('database') }}">Database</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+    <form method="post" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom my-4">Enter Student Details to Search</legend>
+            <div class="form-group mb-4">
+                {{ form.id.label(class="form-control-label") }}
+                {% if form.id.errors %}
+                    {{ form.id(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.id.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.id(class="form-control") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.enter(class="btn btn-outline-secondary") }}
+        </div>
+    </form>
+{% endblock %}

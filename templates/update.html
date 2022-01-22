@@ -1,0 +1,64 @@
+{% extends "layout.html" %}
+{% block content %}
+    <form method="post" action="">
+        {{ form.hidden_tag() }}
+        <fieldset class="form-group">
+            <legend class="border-bottom my-4">Update Student Details</legend>
+            <div class="form-group mb-4">
+                {{ form.name.label(class="form-control-label") }}
+                {% if form.name.errors %}
+                    {{ form.name(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.name.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.name(class="form-control") }}
+                {% endif %}
+            </div>
+            <div class="form-group mb-4">
+                {{ form.id.label(class="form-control-label") }}
+                {% if form.id.errors %}
+                    {{ form.id(class="form-control is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.id.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.id(class="form-control") }}
+                {% endif %}
+            </div>
+            <div class="form-group mb-4">
+                {{ form.department.label(class="form-control-label") }}
+                {% if form.department.errors %}
+                    {{ form.department(class="form-select is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.department.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.department(class="form-select") }}
+                {% endif %}
+            </div>
+            <div class="form-group mb-4">
+                {{ form.status.label(class="form-control-label") }}
+                {% if form.status.errors %}
+                    {{ form.status(class="form-select is-invalid") }}
+                    <div class="invalid-feedback">
+                        {% for error in form.status.errors %}
+                            <span>{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    {{ form.status(class="form-select") }}
+                {% endif %}
+            </div>
+        </fieldset>
+        <div class="form-group">
+            {{ form.enter(class="btn btn-outline-secondary") }}
+        </div>
+    </form>
+{% endblock %}

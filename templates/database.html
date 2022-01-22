@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+{% block content %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Department</th>
+                <th scope="col">Vaccination Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student[1] }}</td>
+                <td>{{ student[0] }}</td>
+                <td>{{ student[2] }}</td>
+                {% if student[3] == 0 %}
+                <td>Not Vaccinated</td>
+                {% elif student[3] == 1 %}
+                <td>First Dose</td>
+                {% else %}
+                <td>Second Dose</td>
+                {% endif %}
+                <td><a class="btn btn-outline-secondary" href="{{ url_for('update', student_id=student[1]) }}">Edit</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
