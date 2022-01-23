@@ -10,12 +10,12 @@ class AddForm(FlaskForm):
                              validators=[DataRequired()])
     status = SelectField("Vaccination Status", choices=[(0, "Not Vaccinated"), (1, "First Dose"), (2, "Second Dose")],
                          validators=[DataRequired()], coerce=int)
-    enter = SubmitField("Enter")
+    enter = SubmitField("Add")
 
 
 class SearchForm(FlaskForm):
     id = IntegerField("ID", validators=[DataRequired()])
-    enter = SubmitField("Enter")
+    enter = SubmitField("Search")
 
 
 class RemoveForm(FlaskForm):
@@ -23,4 +23,4 @@ class RemoveForm(FlaskForm):
     department = SelectField("Department",
                              choices=[(1, "Biomedical"), (2, "Chemical"), (3, "Civil"), (4, "Electrical"),
                                       (5, "Mechanical")])
-    enter = SubmitField("Enter")
+    enter = SubmitField("Remove")

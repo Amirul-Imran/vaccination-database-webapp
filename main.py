@@ -165,6 +165,7 @@ def update(student_id):
         conn.close()
         abort(404)
     form = AddForm()
+    form.enter.label.text = "Update"
     if form.validate_on_submit():
         c.execute("UPDATE students SET name=:name, id=:id, dept=:dept, vaccine=:vacc WHERE id=:old_id",
                   {"name": form.name.data,
