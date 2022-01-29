@@ -1,3 +1,4 @@
 *.zip
 *.db
 /webapp_env
+/static/stats.jpg
