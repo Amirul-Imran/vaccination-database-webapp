@@ -17,19 +17,6 @@
                     {{ form.id(class="form-control") }}
                 {% endif %}
             </div>
-            <div class="form-group mb-4">
-                {{ form.department.label(class="form-control-label") }}
-                {% if form.department.errors %}
-                    {{ form.department(class="form-control is-invalid") }}
-                    <div class="invalid-feedback">
-                        {% for error in form.department.errors %}
-                            <span>{{ error }}</span>
-                        {% endfor %}
-                    </div>
-                {% else %}
-                    {{ form.department(class="form-control") }}
-                {% endif %}
-            </div>
         </fieldset>
         <div class="form-group">
             {{ form.enter(class="btn btn-outline-secondary") }}

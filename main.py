@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "c8b49ab7a60dcb042d7d8148617fdf91"
+departments = ['Mechanical', 'Electrical', 'Chemical', 'Civil', 'Biomedical']
 
 
 def db_connect():
@@ -22,7 +23,7 @@ def db_connect():
         c.execute("""CREATE TABLE students ( 
                 name text,
                 id int,
-                dept text, 
+                dept int, 
                 vaccine int)""")
 
         db.commit()
@@ -30,75 +31,40 @@ def db_connect():
 
 
 def create_plot():
-    n = [0, 0, 0, 0, 0, 0]
-    o = [0, 0, 0, 0, 0, 0]
-    t = [0, 0, 0, 0, 0, 0]
+    no_shots = [0, 0, 0, 0, 0, 0]
+    one_shot = [0, 0, 0, 0, 0, 0]
+    two_shots = [0, 0, 0, 0, 0, 0]
 
     conn = db_connect()
     c = conn.cursor()
     items = c.execute("SELECT * FROM students").fetchall()
 
-    for i in items:
-        if i[2] == 'Biomedical':
-            if i[3] == 0:
-                n[5] += 1
-            if i[3] == 1:
-                o[5] += 1
-            if i[3] == 2:
-                t[5] += 1
+    for item in items:
+        if item[3] == 0:
+            no_shots[item[2]] += 1
+            no_shots[0] += 1
+        elif item[3] == 1:
+            one_shot[item[2]] += 1
+            one_shot[0] += 1
+        else:
+            two_shots[item[2]] += 1
+            two_shots[0] += 1
 
-        if i[2] == 'Civil':
-            if i[3] == 0:
-                n[4] += 1
-            if i[3] == 1:
-                o[4] += 1
-            if i[3] == 2:
-                t[4] += 1
-
-        if i[2] == 'Chemical':
-            if i[3] == 0:
-                n[3] += 1
-            if i[3] == 1:
-                o[3] += 1
-            if i[3] == 2:
-                t[3] += 1
-
-        if i[2] == 'Electrical':
-            if i[3] == 0:
-                n[2] += 1
-            if i[3] == 1:
-                o[2] += 1
-            if i[3] == 2:
-                t[2] += 1
-
-        if i[2] == 'Mechanical':
-            if i[3] == 0:
-                n[1] += 1
-            if i[3] == 1:
-                o[1] += 1
-            if i[3] == 2:
-                t[1] += 1
-
-        if i[3] == 0:
-            n[0] += 1
-        if i[3] == 1:
-            o[0] += 1
-        if i[3] == 2:
-            t[0] += 1
-
-    sub = ['Total', 'ME', 'EE', 'ChE', 'CE', 'BME']
+    sub = departments.copy()
+    sub.insert(0, "Total")
 
     height = 0.15
     values = np.arange(len(sub))
-    plt.barh(values + height + height, n, height, label='No Vaccination')
-    plt.barh(values + height, o, height, label='One Dose')
-    plt.barh(values, t, height, label='Two Doses')
+    plt.barh(values + height + height, no_shots, height, label='No Vaccination')
+    plt.barh(values + height, one_shot, height, label='One Dose')
+    plt.barh(values, two_shots, height, label='Two Doses')
 
-    plt.ylabel('Department')
+    #plt.ylabel('Department')
     plt.xlabel('Number of Students')
     plt.title('Vaccination Chart')
     plt.legend()
     plt.yticks(values + height, sub)
+    plt.tight_layout()
     plt.savefig("static/stats.jpg")
     plt.plot()
     plt.clf()
@@ -121,6 +87,7 @@ def add():
             c.execute("INSERT INTO students VALUES (:name, :id, :dept, :vacc)", {"name": form.name.data, "id": form.id.data, "dept": form.department.data, "vacc": form.status.data})
             conn.commit()
             flash(f"Student {form.name.data} has been added!", "success")
+            conn.close()
             return redirect(url_for("student", student_id=form.id.data))
         else:
             flash(f"Student {form.name.data} already exists!", "danger")
@@ -137,6 +104,7 @@ def search():
         student = c.execute("SELECT * FROM students WHERE id=:id", {"id": form.id.data}).fetchone()
         if student is not None:
             flash(f"Student with ID: {form.id.data} has been found!", "success")
+            conn.close()
             return redirect(url_for("student", student_id=form.id.data))
         else:
             flash("No such entry exists!", "danger")
@@ -148,10 +116,11 @@ def search():
 def student(student_id):
     conn = db_connect()
     c = conn.cursor()
-    student = c.execute("SELECT * FROM students WHERE id=:id", {"id": student_id}).fetchone()
+    student = list(c.execute("SELECT * FROM students WHERE id=:id", {"id": student_id}).fetchone())
     if student is None:
         conn.close()
         abort(404)
+    student[2] = departments[student[2] - 1]
     conn.close()
     return render_template("student.html", student=student)
 
@@ -196,6 +165,7 @@ def remove():
             c.execute("DELETE FROM students WHERE id=:id", {"id": form.id.data})
             conn.commit()
             flash(f"Student with ID: {form.id.data} has been removed!", "success")
+            conn.close()
             return redirect(url_for("home"))
         else:
             flash("No such entry exists!", "danger")
@@ -214,6 +184,9 @@ def database():
     conn = db_connect()
     c = conn.cursor()
     students = c.execute("SELECT * FROM students").fetchall()
+    for index, s in enumerate(students):
+        students[index] = list(students[index])
+        students[index][2] = departments[students[index][2] - 1]
     conn.close()
     return render_template("database.html", students=students)
 
