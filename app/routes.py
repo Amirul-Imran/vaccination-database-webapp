@@ -1,11 +1,7 @@
-from flask import Flask, render_template, url_for, flash, redirect, abort, request
-from forms import AddForm, SearchForm, RemoveForm
-from utils import db_connect, create_plot
-
-
-app = Flask(__name__)
-app.config["SECRET_KEY"] = "c8b49ab7a60dcb042d7d8148617fdf91"
-departments = ['Mechanical', 'Electrical', 'Chemical', 'Civil', 'Biomedical']
+from flask import render_template, url_for, redirect, flash, abort, request
+from app import app, departments
+from app.utils import db_connect, create_plot
+from app.forms import AddForm, SearchForm, RemoveForm
 
 
 @app.route("/")
@@ -128,7 +124,3 @@ def database():
         students[index][2] = departments[students[index][2] - 1]
     conn.close()
     return render_template("database.html", students=students)
-
-
-if __name__ == "__main__":
-    app.run(debug=True)

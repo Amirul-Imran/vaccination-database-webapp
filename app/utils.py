@@ -56,7 +56,7 @@ def create_plot():
     plt.legend()
     plt.yticks(values + height, sub)
     plt.tight_layout()
-    plt.savefig("static/stats.jpg")
+    plt.savefig("app/static/stats.jpg")
     plt.plot()
     plt.clf()
     conn.close()
