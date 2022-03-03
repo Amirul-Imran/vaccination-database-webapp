@@ -7,9 +7,9 @@ class AddForm(FlaskForm):
     name = StringField("Name", validators=[DataRequired()])
     id = IntegerField("ID", validators=[DataRequired()])
     department = SelectField("Department", choices=[(1, "Mechanical"), (2, "Electrical"), (3, "Chemical"), (4, "Civil"),
-                                                    (5, "Biomedical")], validators=[DataRequired()], coerce=int)
+                                                    (5, "Biomedical")], coerce=int)
     status = SelectField("Vaccination Status", choices=[(0, "Not Vaccinated"), (1, "First Dose"), (2, "Second Dose")],
-                         validators=[DataRequired()], coerce=int)
+                         coerce=int)
     enter = SubmitField("Add")
 
 

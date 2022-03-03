@@ -1,4 +1,4 @@
 *.zip
 *.db
+*.jpg
 /webapp_env/
-/app/static/*.jpg

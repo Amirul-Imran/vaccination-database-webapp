@@ -1,26 +1,8 @@
 import numpy as np
-import sqlite3
+from app.models import Student
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-
-
-def db_connect():
-    db = sqlite3.connect("vaccine.db")
-    c = db.cursor()
-
-    table = c.execute("""SELECT name FROM sqlite_master WHERE type='table'
-                            AND name='students'; """).fetchall()
-
-    if not table:
-        c.execute("""CREATE TABLE students ( 
-                name text,
-                id int,
-                dept int, 
-                vaccine int)""")
-
-        db.commit()
-    return db
 
 
 def create_plot():
@@ -28,19 +10,17 @@ def create_plot():
     one_shot = [0, 0, 0, 0, 0, 0]
     two_shots = [0, 0, 0, 0, 0, 0]
 
-    conn = db_connect()
-    c = conn.cursor()
-    items = c.execute("SELECT * FROM students").fetchall()
+    items = Student.query.all()
 
     for item in items:
-        if item[3] == 0:
-            no_shots[item[2]] += 1
+        if item.vaccine_status == 0:
+            no_shots[item.department] += 1
             no_shots[0] += 1
-        elif item[3] == 1:
-            one_shot[item[2]] += 1
+        elif item.vaccine_status == 1:
+            one_shot[item.department] += 1
             one_shot[0] += 1
         else:
-            two_shots[item[2]] += 1
+            two_shots[item.department] += 1
             two_shots[0] += 1
 
     sub = ['Total', 'Mechanical', 'Electrical', 'Chemical', 'Civil', 'Biomedical']
@@ -59,4 +39,3 @@ def create_plot():
     plt.savefig("app/static/stats.jpg")
     plt.plot()
     plt.clf()
-    conn.close()
