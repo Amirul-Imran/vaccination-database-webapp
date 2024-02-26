@@ -1,4 +1,7 @@
 *.zip
 *.db
 *.jpg
-/webapp_env/
+/webapp_env2/
+/instance/
+/.idea/
+/app/__pycache__/
